@@ -1,0 +1,59 @@
+package archivoDeDatos;
+
+public class Indices {
+
+	private String clave;
+	private String direccion;
+	private String nIzquierdo;
+	private String nDerecho;
+	private String nPadre;
+
+	public static final int L_CLAVE = 8;
+	public static final int L_DIRECCION = 3;
+	public static final int L_IZQUIERDO = 3;
+	public static final int L_DERECHO = 3;
+	public static final int L_PADRE = 3;
+	
+	public void setClave(String clave) {
+		this.clave = clave;
+	}
+	
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+	
+	public void setNIzquierdo(String nIzquierdo) {
+		this.nIzquierdo = nIzquierdo;
+	}
+	
+	public void setNDerecho(String nDerecho) {
+		this.nDerecho = nDerecho;
+	}
+
+	public void setNPadre(String nPadre) {
+		this.nPadre = nPadre;
+	}
+	
+	
+	
+	public String getClave() {
+		return clave;
+	}
+	
+	public String getDireccion() {
+		return direccion;
+	}
+	
+	public String getNIzquierdo() {
+		return nIzquierdo;
+	}
+
+	public String getNDerecho() {
+		return nDerecho;
+	}
+	
+	public String getNPadre() {
+		return nPadre;
+	}
+	
+}

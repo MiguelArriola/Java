@@ -1,0 +1,14 @@
+package archivoDeDatos;
+
+public class Indices {
+
+	private StringBuilder clave = new StringBuilder();
+	private StringBuilder direccion = new StringBuilder();
+	private StringBuilder nIzquierdo = new StringBuilder();
+	private StringBuilder nDerecho = new StringBuilder();
+	private StringBuilder nPadre = new StringBuilder();
+
+	public static final int L_CLAVE = 8;
+	public static final int L_DIRECCION = 3;
+
+}

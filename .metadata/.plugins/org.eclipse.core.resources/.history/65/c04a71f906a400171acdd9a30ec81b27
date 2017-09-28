@@ -1,0 +1,142 @@
+package archivoDeDatos;
+
+public class Datos {
+
+	private String numeroCuenta;
+	private String nombre;
+	private String apellidoPaterno;
+	private String apellidoMaterno;
+	private String semestre;
+	private String carrera;
+	private String edad;
+	public static final int L_CUENTA = 8;
+	public static final int L_NOMBRE = 20;
+	public static final int L_PATERNO = 14;
+	public static final int L_MATERNO = 14;
+	public static final int L_SEMESTRE = 2;
+	public static final int L_CARRERA = 3;
+	public static final int L_EDAD = 2;
+
+	public enum TipoCampo {
+		NOMBRE, NUMERO
+	};
+
+	public boolean setNumeroCuenta(String numeroCuentaDado) {
+
+		if (elCampoEsValido(numeroCuentaDado, L_CUENTA, TipoCampo.NUMERO)) {
+			numeroCuenta = numeroCuentaDado;
+
+			for (int i = numeroCuenta.length(); i < L_CUENTA; i++)
+				numeroCuenta += " ";
+			return true;
+		}
+		return false;
+	}
+
+	public Boolean setNombre(String nombreDado) {
+
+		if (elCampoEsValido(nombreDado, L_NOMBRE, TipoCampo.NOMBRE)) {
+			nombre = nombreDado;
+
+			for (int i = nombre.length(); i < L_NOMBRE; i++)
+				nombre += " ";
+			return true;
+		}
+		return false;
+	}
+
+	public Boolean setApellidoPaterno(String apellidoPaternoDado) {
+
+		if (elCampoEsValido(apellidoPaternoDado, L_PATERNO, TipoCampo.NOMBRE)) {
+			apellidoPaterno = apellidoPaternoDado;
+
+			for (int i = apellidoPaterno.length(); i < L_PATERNO; i++)
+				apellidoPaterno += " ";
+			return true;
+		}
+		return false;
+	}
+
+	public Boolean setApellidoMaterno(String apellidoMaternoDado) {
+
+		if (elCampoEsValido(apellidoMaternoDado, L_MATERNO, TipoCampo.NOMBRE)) {
+			apellidoMaterno = apellidoMaternoDado;
+
+			for (int i = apellidoMaterno.length(); i < L_MATERNO; i++)
+				apellidoMaterno += " ";
+			return true;
+		}
+		return false;
+	}
+
+	public Boolean setSemestre(String semestreDado) {
+
+		if (elCampoEsValido(semestreDado, L_SEMESTRE, TipoCampo.NUMERO)) {
+			semestre = semestreDado;
+
+			for (int i = semestre.length(); i < L_SEMESTRE; i++)
+				semestre += " ";
+			return true;
+		}
+		return false;
+	}
+
+	public Boolean setCarrera(String carreraDada) {
+
+		if (elCampoEsValido(carreraDada, L_CARRERA, TipoCampo.NUMERO)) {
+			carrera = carreraDada;
+
+			for (int i = carrera.length(); i < L_CARRERA; i++)
+				carrera += " ";
+			return true;
+		}
+		return false;
+	}
+
+	public Boolean setEdad(String edadDada) {
+
+		if (elCampoEsValido(edadDada, L_EDAD, TipoCampo.NUMERO)) {
+			edad = edadDada;
+
+			for (int i = edad.length(); i < L_EDAD; i++)
+				edad += " ";
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean elCampoEsValido(String cadena, int longitudCampo,
+			TipoCampo tipoCampo) {
+
+		if (!(1 <= cadena.length() && cadena.length() <= longitudCampo)) {
+			System.out.println();
+			System.err.println("\tDeben ser ente 1 y " + longitudCampo
+					+ " caracteres");
+			return false;
+		}
+
+		if (tipoCampo == TipoCampo.NOMBRE && !cadena.matches("[a-zA-Z ]*")) {
+			System.out.println();
+			System.err.println("\tDeben ser solo letras y espacios");
+			return false;
+		}
+
+		if (tipoCampo == TipoCampo.NUMERO && !cadena.matches("\\d*")) {
+			System.out.println();
+			System.err.println("\tDeben ser solo digitos");
+			return false;
+		}
+		return true;
+	}
+
+	public static int getLongitud() {
+		return L_CUENTA + L_NOMBRE + L_PATERNO + L_MATERNO + L_SEMESTRE
+				+ L_CARRERA + L_EDAD;
+	}
+
+	public String getRegistro() {
+		return numeroCuenta + nombre + apellidoPaterno + apellidoMaterno
+				+ semestre + carrera + edad;
+	}
+
+}

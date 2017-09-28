@@ -1,0 +1,68 @@
+package archivoDeAccesoDirecto;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.FormatterClosedException;
+import java.util.Scanner;
+
+public class Principal {
+
+	private static Scanner entrada = new Scanner(System.in);
+
+	public static void main(String[] args) {
+
+		try {
+			GestorArchivo gestor = new GestorArchivo();
+			gestor.abrirArchivo();
+			System.out.println("PROGRAMA 3. ARCHIVO INDEXADO");
+			System.out.println();
+			int elccion = mostarMenu();
+
+			while (elccion != 3) {
+
+				if (elccion == 1)
+					gestor.agregarRegistro();
+				else
+					gestor.consultarRegistro();
+				System.out.println();
+				elccion = mostarMenu();
+			}
+			gestor.cerrarArchivo();
+
+		} catch (FileNotFoundException e) {
+			System.err.println("Error al leer el archivo");
+
+		} catch (FormatterClosedException e) {
+			System.err.println("Error al escribir en el archivo");
+
+		} catch (IOException e) {
+			System.err.println("Error al escribir/leer el archivo");
+		}
+
+	}
+
+	private static int mostarMenu() {
+		String cadena = new String();
+		boolean repetir = true;
+
+		do {
+			System.out.println("MENU PRINCIPAL");
+			System.out.println("Elige una opcion");
+			System.out.println("\t1. Agregar registro");
+			System.out.println("\t2. Consultar registro");
+			System.out.println("\t3. Salir");
+			System.out.print("\t>> ");
+			cadena = entrada.nextLine();
+
+			if (cadena.matches("[123]")) {
+				repetir = false;
+
+			} else {
+				System.out.println();
+				System.err.println("Escribe solo 1, 2 o 3");
+			}
+
+		} while (repetir);
+		return Integer.parseInt(cadena);
+	}
+}

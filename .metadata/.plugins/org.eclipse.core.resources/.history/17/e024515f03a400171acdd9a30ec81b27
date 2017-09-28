@@ -1,0 +1,230 @@
+package archivoDeAccesoDirecto;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.util.FormatterClosedException;
+import java.util.Scanner;
+
+public class GestorArchivo {
+
+	private RandomAccessFile accesoArchivo;
+	private String nombreArchivo = "archivoAccesoDirecto.txt";
+	private int cantidadRegistros = 100;
+	private int longitudRegistros = ModeloRegistro.getLongitud() + 2;
+	private int registroActual;
+	private Scanner entrada = new Scanner(System.in);
+
+	public void abrirArchivo() throws FileNotFoundException, IOException {
+		File fichero = new File(nombreArchivo);
+
+		if (fichero.exists())
+			accesoArchivo = new RandomAccessFile(fichero, "rw");
+
+		else {
+			accesoArchivo = new RandomAccessFile(fichero, "rw");
+			StringBuffer buffer = new StringBuffer();
+
+			for (int i = 0; i < cantidadRegistros; i++) {
+
+				for (int j = 0; j < longitudRegistros - 2; j++)
+					buffer.append(" ");
+				buffer.append("\r\n");
+			}
+			accesoArchivo.writeBytes(buffer.toString());
+		}
+	}
+
+	public void agregarRegistro() throws FormatterClosedException, IOException {
+		ModeloRegistro regidtro = new ModeloRegistro();
+		System.out.println();
+		System.out.println("AGREGAR REGISTRO");
+		System.out.println();
+		boolean continuarCaptura = true;
+		int campo = 0;
+
+		while (continuarCaptura)
+
+			switch (campo) {
+			case 0:
+				System.out.print("\tEscribe el numero de registro: ");
+				if (setRegistroActual(entrada.nextLine()))
+					++campo;
+				else
+					continuarCaptura = dialogoContinuar();
+				break;
+
+			case 1:
+				System.out.print("\t-Escribe el numero de cuenta: ");
+				if (regidtro.setNumeroCuenta(entrada.nextLine()))
+					++campo;
+				else
+					continuarCaptura = dialogoContinuar();
+				break;
+
+			case 2:
+				System.out.print("\t-Escribe el nombre(s): ");
+				if (regidtro.setNombre(entrada.nextLine()))
+					++campo;
+				else
+					continuarCaptura = dialogoContinuar();
+				break;
+
+			case 3:
+				System.out.print("\t-Escribe el apellido paterno: ");
+				if (regidtro.setApellidoPaterno(entrada.nextLine()))
+					++campo;
+				else
+					continuarCaptura = dialogoContinuar();
+				break;
+
+			case 4:
+				System.out.print("\t-Escribe el apellido materno: ");
+				if (regidtro.setApellidoMaterno(entrada.nextLine()))
+					++campo;
+				else
+					continuarCaptura = dialogoContinuar();
+				break;
+
+			case 5:
+				System.out.print("\t-Escribe el numero de semestre: ");
+				if (regidtro.setSemestre(entrada.nextLine()))
+					++campo;
+				else
+					continuarCaptura = dialogoContinuar();
+				break;
+
+			case 6:
+				System.out.print("\t-Escribe la clave de carrera: ");
+				if (regidtro.setCarrera(entrada.nextLine()))
+					++campo;
+				else
+					continuarCaptura = dialogoContinuar();
+				break;
+
+			case 7:
+				System.out.print("\t-Escribe la edad: ");
+				if (regidtro.setEdad(entrada.nextLine()))
+					++campo;
+				else
+					continuarCaptura = dialogoContinuar();
+				break;
+
+			case 8:
+				posicionarPuntero();
+				accesoArchivo.writeBytes(regidtro.getRegistro());
+				System.out.println("Se registro con exito");
+				continuarCaptura = false;
+			}
+	}
+
+	public void consultarRegistro() throws IOException {
+		StringBuilder builder;
+		ModeloRegistro regidtro = new ModeloRegistro();
+		System.out.println();
+		System.out.println("CONSULTAR REGISTRO");
+		System.out.println();
+		boolean continuarConsulta = true;
+
+		while (continuarConsulta) {
+			System.out.print("\tEscribe el numero de registro: ");
+
+			if (setRegistroActual(entrada.nextLine())) {
+				posicionarPuntero();
+				builder = new StringBuilder(accesoArchivo.readLine());
+				mostrarRegistro(builder);
+				continuarConsulta = false;
+
+			} else {
+				continuarConsulta = dialogoContinuar();
+			}
+		}
+	}
+
+	private void mostrarRegistro(StringBuilder builder) {
+		System.out.println("\tMostrando el registro: " + registroActual);
+		System.out.println("\t-Numero de cuenta: "
+				+ builder.substring(0, ModeloRegistro.L_CUENTA));
+		builder.delete(0, ModeloRegistro.L_CUENTA);
+		System.out.println("\t-Nombre: "
+				+ builder.substring(0, ModeloRegistro.L_NOMBRE));
+		builder.delete(0, ModeloRegistro.L_NOMBRE);
+		System.out.println("\t-Apellido paterno: "
+				+ builder.substring(0, ModeloRegistro.L_PATERNO));
+		builder.delete(0, ModeloRegistro.L_PATERNO);
+		System.out.println("\t-Apellido materno: "
+				+ builder.substring(0, ModeloRegistro.L_MATERNO));
+		builder.delete(0, ModeloRegistro.L_MATERNO);
+		System.out.println("\t-Semestre: "
+				+ builder.substring(0, ModeloRegistro.L_SEMESTRE));
+		builder.delete(0, ModeloRegistro.L_SEMESTRE);
+		System.out.println("\t-Carrera: "
+				+ builder.substring(0, ModeloRegistro.L_CARRERA));
+		builder.delete(0, ModeloRegistro.L_CARRERA);
+		System.out.println("\t-Edad: "
+				+ builder.substring(0, ModeloRegistro.L_EDAD));
+		builder.delete(0, ModeloRegistro.L_EDAD);
+	}
+
+	private boolean setRegistroActual(String cadenaRegistro) {
+		int numeroRegistro = 0;
+
+		if (cadenaRegistro.matches("\\d*")) {
+
+			try {
+				numeroRegistro = Integer.parseInt(cadenaRegistro);
+
+			} catch (NumberFormatException numberFormatException) {
+				System.out.println();
+				System.err.println("\tDebe ser un entero entre 1 y 100");
+				return false;
+			}
+
+			if (1 <= numeroRegistro && numeroRegistro <= 100) {
+				registroActual = numeroRegistro;
+				return true;
+
+			} else {
+				System.out.println();
+				System.err.println("\tDebe ser un entero entre 1 y 100");
+			}
+
+		} else {
+			System.out.println();
+			System.err.println("\tDebe ser un entero entre 1 y 100");
+		}
+		return false;
+	}
+
+	private void posicionarPuntero() throws IOException {
+		accesoArchivo.seek(registroActual * longitudRegistros
+				- longitudRegistros);
+	}
+
+	private boolean dialogoContinuar() {
+		String cadena = new String();
+		boolean repetir = true;
+
+		do {
+			System.out.println("¿Continuar?");
+			System.out.println("\t1. Aceptar");
+			System.out.println("\t2. Cancelar");
+			System.out.print("\t>> ");
+			cadena = entrada.nextLine();
+			System.out.println();
+
+			if (cadena.matches("[12]") && 0 < cadena.length())
+				repetir = false;
+
+			else
+				System.err.println("\tEscribe solo 1 o 2");
+
+		} while (repetir);
+		return Integer.parseInt(cadena) == 1;
+	}
+
+	public void cerrarArchivo() throws IOException {
+		accesoArchivo.close();
+	}
+}
