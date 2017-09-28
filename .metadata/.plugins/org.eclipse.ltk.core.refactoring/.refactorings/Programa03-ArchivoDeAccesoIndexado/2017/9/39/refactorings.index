@@ -5,3 +5,5 @@
 1506580630039	Rename field 'cantidadRegistros'
 1506580947086	Rename local variable 'regidtro'
 1506580991713	Rename local variable 'campo'
+1506581587472	Rename method 'dialogoContinuar'
+1506582213663	Rename local variable 'cadena'
